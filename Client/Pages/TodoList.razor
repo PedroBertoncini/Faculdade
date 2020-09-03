@@ -1,0 +1,71 @@
+@page "/todolist"
+
+<Container>
+    <Addons>
+    <Addon AddonType="AddonType.Body">
+        <TextEdit Placeholder="Novo item" @bind-Text="newTodo"/>
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Color="Color.Secondary" @onclick="AddTask">Adicionar</Button>
+    </Addon>
+    </Addons>
+</Container>
+
+<h1>Lista de Tarefas</h1>
+
+    <Check Checked="true">Feitos</Check>
+    
+    <Text Color="TextColor.Danger"><Check Checked="false">Não feitos</Check></Text>
+
+
+<Table>
+    <TableHeader ThemeContrast="ThemeContrast.Light"></TableHeader>
+    <TableBody>
+        @foreach (var item in listaTodo)
+        {
+            if(item.Done)
+            {
+                <TableRow>
+                    <TableRowCell>
+                        <Inline><Check TValue="bool" @bind-Checked="@item.Done"> </Check>
+                    
+                     @item.Title</Inline></TableRowCell>
+                </TableRow>
+            }
+            else
+            {
+                <TableRow>
+                <TableRowCell TextColor="TextColor.Danger">
+                    <Check TValue="bool" @bind-Checked="@item.Done"> </Check>
+                    
+                    @item.Title</TableRowCell>
+                </TableRow>
+            }
+        }
+    </TableBody>
+</Table>
+
+
+
+@code{
+    List<Todo2> listaTodo;
+    public string newTodo { get; set; }
+    private void AddTask()
+    {
+        listaTodo.Add(new Todo2(){Title = newTodo});
+    }
+    
+
+    protected override void OnInitialized()
+    {
+
+        listaTodo = new List<Todo2>(){
+
+        new Todo2(){Title = "Varrer o ouintal", Done = false},
+        new Todo2(){Title = "Correr no mercado", Done=false},
+        new Todo2(){Title = "Estudar programação", Done = true}
+    };
+
+    }
+
+}
